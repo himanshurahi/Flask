@@ -3,11 +3,11 @@ import sqlite3
 connection = sqlite3.connect("data.db")
 
 cursor = connection.cursor()
-# create_table = "CREATE TABLE users (id INTEGER PRIMARY KEY, username text, password text)"
+# create_table = "CREATE TABLE items (id INTEGER PRIMARY KEY, name text, price real)"
 # cursor.execute(create_table)
 
-# user = (1, "himanshurahi", "1234")
-insert_query = "INSERT INTO users VALUES (null,'raja','1234')"
+# # user = (1, "himanshurahi", "1234")
+insert_query = "INSERT INTO items VALUES (null,'book',23)"
 cursor.execute(insert_query)
 
 connection.commit()
