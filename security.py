@@ -1,6 +1,6 @@
 from werkzeug.security import safe_str_cmp
 import sqlite3
-from User import User
+from resources.User import User
 from flask_bcrypt import Bcrypt
 from flask import Flask, request
 

@@ -3,7 +3,7 @@ from flask_restful import Resource, Api, reqparse
 from security import authenticate, identity
 from flask_jwt import JWT, jwt_required, current_identity
 import sqlite3
-from User import User
+from resources.User import User
 from flask_bcrypt import Bcrypt
 
 items = [{
