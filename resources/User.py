@@ -1,42 +1,27 @@
 import sqlite3
-class User(object):
-    def __init__(self, id, username, password):
-        self.id = id
-        self.username = username
-        self.password = password
+from flask_restful import Resource, Api, reqparse
 
-    # def __str__(self):
-    #     return "User(id='%s')" % self.id
-    @classmethod
-    def find_by_username(self, username):
+
+class UserRegister(Resource):
+    def post(self):
         connection = sqlite3.connect("data.db")
         cursor = connection.cursor()
+        parser = reqparse.RequestParser()
+        parser.add_argument("username", type=str,
+                            required=True, help='Username Required')
+        parser.add_argument("password", type=str,
+                            required=True, help="Password Required")
+        data = parser.parse_args()
+        find_user = User.find_by_username(data['username'])
+        if find_user:
+            return {"Message": "Username taken"}, 400
+        
+        query = f"INSERT INTO users VALUES(NULL, ?,?)"
 
-        query = f"SELECT * FROM users WHERE username = '{username}'"
-        result = cursor.execute(query)
-        row = result.fetchone()
-        if row:
-            user = User(row[0], row[1], row[2])
-            # print(user.username)
-        else:
-            user = None
+        password_hash = bcrypt.generate_password_hash(
+            data['password']).decode("utf-8")
+
+        cursor.execute(query, (data['username'], password_hash))
+        connection.commit()
         connection.close()
-        return user
-
-    @classmethod
-    def find_by_userid(self, id):
-        connection = sqlite3.connect("data.db")
-        cursor = connection.cursor()
-
-        query = f"SELECT * FROM users WHERE id = '{id}'"
-        result = cursor.execute(query)
-        row = result.fetchone()
-        if row:
-            user = User(row[0], row[1], row[2])
-            # print(user.username)
-        else:
-            user = None
-        connection.close()
-        return user
-
-
+        return {"msg": "User Created"}
