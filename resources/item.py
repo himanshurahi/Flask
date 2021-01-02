@@ -19,11 +19,10 @@ items = [{
 
 class Item(Resource):
     def get(self, name):
-         item = ItemModel.find_by_name(name)
-         if item:
-             return item.json()
-         return {"Msg" : "Empty"}
-             
+        item = ItemModel.find_by_name(name)
+        if item:
+            return item.json()
+        return {"Msg": "Empty"}
 
     def post(self, name):
         requested_data = request.get_json()
@@ -41,8 +40,6 @@ class Item(Resource):
         connection.close()
 
         return {"message": "Item Deleted Successfully."}
-
-   
 
     # @jwt_required()
 
